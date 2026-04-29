@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #0e0f13;
+  --surface: #161720;
+  --surface2: #1e2030;
+  --border: rgba(255, 255, 255, 0.08);
+  --accent: #7c6ff7;
+  --accent2: #4fd1c5;
+  --text: #e8e9f0;
+  --muted: #6b7280;
+  --online: #34d399;
+  --font: 'Syne', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --radius: 12px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}

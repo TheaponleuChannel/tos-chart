@@ -1,0 +1,76 @@
+<!-- Welcome screen -->
+<div class="welcome" *ngIf="!active">
+  <div class="welcome-icon">✦</div>
+  <div class="welcome-title">Welcome to TosChat</div>
+  <div class="welcome-sub">Select a user for a private chat, or create a group to chat with multiple people.</div>
+</div>
+
+<!-- Active chat -->
+<ng-container *ngIf="active">
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="avatar sm" *ngIf="active.type === 'private'" [style.background]="colorFor(active.name)">
+      {{ initials(active.name) }}
+    </div>
+    <div class="group-icon" *ngIf="active.type === 'group'">#</div>
+    <div class="header-info">
+      <div class="header-name">{{ active.name }}</div>
+      <div class="header-sub">{{ headerSub }}</div>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="messages" #messagesEl>
+    <div class="empty-chat" *ngIf="messages.length === 0">
+      <div class="empty-icon">💬</div>
+      <div>No messages yet. Say hello!</div>
+    </div>
+
+    <ng-container *ngFor="let msg of messages; let i = index">
+      <!-- System message -->
+      <div class="sys-msg" *ngIf="msg.type === 'sys'">{{ msg.text }}</div>
+
+      <!-- Regular message -->
+      <div
+        *ngIf="msg.type === 'msg'"
+        class="msg-row"
+        [class.self]="isSelf(msg)"
+      >
+        <!-- Avatar (other users only) -->
+        <div
+          *ngIf="!isSelf(msg)"
+          class="avatar sm msg-avatar"
+          [class.hidden]="!showAvatar(messages, i)"
+          [style.background]="colorFor(msg.senderName || '')"
+        >{{ initials(msg.senderName || '') }}</div>
+
+        <div class="msg-content">
+          <!-- Sender name (group chats only) -->
+          <div class="msg-sender" *ngIf="showSenderName(messages, i)">{{ msg.senderName }}</div>
+
+          <div class="msg-bubble" [class.self]="isSelf(msg)" [class.other]="!isSelf(msg)">
+            {{ msg.text }}
+          </div>
+
+          <div class="msg-time" [class.self]="isSelf(msg)">{{ formatTime(msg.at) }}</div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Typing -->
+  <app-typing-indicator></app-typing-indicator>
+
+  <!-- Input -->
+  <div class="input-area">
+    <textarea
+      class="msg-input"
+      [(ngModel)]="messageText"
+      placeholder="Type a message…"
+      rows="1"
+      (input)="onTyping()"
+      (keydown)="handleKeydown($event)"
+    ></textarea>
+    <button class="send-btn" (click)="sendMessage()">➤</button>
+  </div>
+</ng-container>

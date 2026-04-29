@@ -1,0 +1,36 @@
+<div class="backdrop" (click)="onClose()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-title">Create Group Chat</div>
+
+    <label>Group Name</label>
+    <input
+      type="text"
+      [(ngModel)]="groupName"
+      placeholder="e.g. Project Team"
+      maxlength="30"
+      (keydown.enter)="create()"
+    />
+
+    <label style="margin-top: 16px;">Add Members</label>
+    <div class="user-picker">
+      <div
+        *ngFor="let user of users"
+        class="user-chip"
+        [class.selected]="isSelected(user.id)"
+        (click)="toggleUser(user.id)"
+      >
+        <div class="chip-avatar" [style.background]="colorFor(user.name)">{{ initials(user.name) }}</div>
+        <span>{{ user.name }}</span>
+        <span class="check" *ngIf="isSelected(user.id)">✓</span>
+      </div>
+      <div class="empty-hint" *ngIf="users.length === 0">No other users online</div>
+    </div>
+
+    <div class="modal-err" *ngIf="error()">{{ error() }}</div>
+
+    <div class="modal-actions">
+      <button class="btn cancel" (click)="onClose()">Cancel</button>
+      <button class="btn confirm" (click)="create()">Create Group</button>
+    </div>
+  </div>
+</div>

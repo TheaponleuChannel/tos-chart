@@ -1,0 +1,75 @@
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <div class="logo-icon">💬</div>
+      <span>TosChat</span>
+    </div>
+    <button class="logout-btn" (click)="logout()">Sign out</button>
+  </div>
+
+  <!-- Me -->
+  <div class="me-row" *ngIf="me">
+    <div class="avatar" [style.background]="colorFor(me.name)">{{ initials(me.name) }}</div>
+    <div class="me-info">
+      <div class="me-name">{{ me.name }}</div>
+      <div class="me-status">● Online</div>
+    </div>
+  </div>
+
+  <div class="sidebar-scroll">
+    <!-- Online Users -->
+    <div class="section">
+      <div class="section-title">
+        <span>Online Users</span>
+        <span class="count">{{ onlineUsers.length }}</span>
+      </div>
+      <div class="item-list">
+        <div
+          *ngFor="let user of onlineUsers"
+          class="sidebar-item"
+          [class.active]="isActivePrivate(user.id)"
+          (click)="selectUser(user)"
+        >
+          <div class="avatar sm" [style.background]="colorFor(user.name)">{{ initials(user.name) }}</div>
+          <div class="item-meta">
+            <span class="item-name">{{ user.name }}</span>
+            <span class="item-preview" *ngIf="lastMessage(privateKey(user.id))">
+              {{ lastMessage(privateKey(user.id)) }}
+            </span>
+          </div>
+          <div class="item-right">
+            <div class="online-dot"></div>
+            <div class="badge" *ngIf="unreadFor(privateKey(user.id)) > 0">
+              {{ unreadFor(privateKey(user.id)) }}
+            </div>
+          </div>
+        </div>
+        <div class="empty-hint" *ngIf="onlineUsers.length === 0">No other users online</div>
+      </div>
+    </div>
+
+    <!-- Groups -->
+    <div class="section">
+      <div class="section-title">
+        <span>Groups</span>
+        <button class="add-btn" (click)="openGroupModal.emit()" title="Create group">+</button>
+      </div>
+      <div class="item-list">
+        <div
+          *ngFor="let group of groups"
+          class="sidebar-item"
+          [class.active]="isActiveGroup(group.id)"
+          (click)="selectGroup(group)"
+        >
+          <div class="group-icon">#</div>
+          <div class="item-meta">
+            <span class="item-name">{{ group.name }}</span>
+            <span class="item-preview">{{ group.members.length + 1 }} members</span>
+          </div>
+          <div class="badge" *ngIf="unreadFor(group.id) > 0">{{ unreadFor(group.id) }}</div>
+        </div>
+        <div class="empty-hint" *ngIf="groups.length === 0">No groups yet</div>
+      </div>
+    </div>
+  </div>
+</aside>

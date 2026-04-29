@@ -1,0 +1,32 @@
+<div class="login-screen">
+  <div class="login-bg"></div>
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="icon">💬</div>
+      <span>TosChat</span>
+    </div>
+    <h1 class="login-title">Welcome back</h1>
+    <p class="login-sub">Enter a username to join as a guest. No password needed.</p>
+
+    <label for="username">Your username</label>
+    <input
+      id="username"
+      type="text"
+      [(ngModel)]="username"
+      placeholder="e.g. alex_smith"
+      maxlength="20"
+      autocomplete="off"
+      (keydown.enter)="onSubmit()"
+    />
+
+    <div class="login-err" *ngIf="error()">{{ error() }}</div>
+
+    <button
+      class="login-btn"
+      (click)="onSubmit()"
+      [disabled]="loading()"
+    >
+      {{ loading() ? 'Connecting…' : 'Join as Guest →' }}
+    </button>
+  </div>
+</div>
